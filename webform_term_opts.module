@@ -2,8 +2,8 @@
 
 /**
  * @file
- * This is a simple module implementing a webform hook to offer vocabulary terms
- * to be used as options in form components.
+ * This is a simple module implementing a webform hook to offer vocabulary
+ * terms to be used as options in form components.
  * 
  * @author Martin Martinov <martinm@propeople.dk>
  */
@@ -18,7 +18,7 @@ function webform_term_opts_webform_select_options_info() {
   
   foreach ($vocabularies as $voc) {
     /**
-     * @todo Check if each vocabulary is configured to be shown here.
+     * @todo Add a setting that enables each vocabulary to be shown here.
      */
     $items['vid_' . $voc->vid] = array(
       'title' => $voc->name,
@@ -37,11 +37,15 @@ function webform_term_options_vocabulary_terms($component, $flat, $filter, $vid)
   $terms = array();
   
   $tree = taxonomy_get_tree($vid);
-  /**
-   * @todo Do something for hierarchical vocabularies here (hint: use $flat arg)
-   */
-  foreach ($tree as $term) {
-    $terms['tid_' . $term->tid] = $term->name;
+  if ($flat) {
+    foreach ($tree as $term) {
+      $terms['tid_' . $term->tid] = $term->name;
+    }
+  }
+  else {
+    foreach ($tree as $term) {
+      $terms['tid_' . $term->tid] = str_repeat('-', $term->depth) . $term->name;
+    }
   }
 
   return $terms;
