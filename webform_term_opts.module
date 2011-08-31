@@ -37,14 +37,19 @@ function webform_term_options_vocabulary_terms($component, $flat, $filter, $vid)
   $terms = array();
   
   $tree = taxonomy_get_tree($vid);
-  if ($flat) {
-    foreach ($tree as $term) {
-      $terms['tid_' . $term->tid] = $term->name;
+
+  $use_i18n = module_exists('i18n_taxonomy');
+
+  foreach ($tree as $term) {
+    $prefix = '';
+    if (!$flat) {
+      $prefix = str_repeat('-', $term->depth);
     }
-  }
-  else {
-    foreach ($tree as $term) {
-      $terms['tid_' . $term->tid] = str_repeat('-', $term->depth) . $term->name;
+    if ($use_i18n) {
+      $terms['tid_' . $term->tid] = $prefix . i18n_taxonomy_term_name($term);
+    }
+    else {
+      $terms['tid_' . $term->tid] = $prefix . $term->name;
     }
   }
 
