@@ -31,7 +31,7 @@ function webform_term_opts_webform_select_options_info() {
 /**
  * Option list containing all terms of specified vocabulary.
  */
-function webform_term_options_vocabulary_terms($component, $flat, $filter, $vid) {
+function webform_term_options_vocabulary_terms($component, $flat, $vid) {
   $terms = array();
 
   $tree = taxonomy_get_tree($vid);
