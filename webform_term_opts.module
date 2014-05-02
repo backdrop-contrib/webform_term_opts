@@ -2,10 +2,8 @@
 
 /**
  * @file
- * This is a simple module implementing a webform hook to offer vocabulary
- * terms to be used as options in form components.
- *
- * @author Martin Martinov <martinm@propeople.dk>
+ * This is a simple module implementing a webform hook to offer vocabulary terms
+ * to be used as options in form components.
  */
 
 /**
