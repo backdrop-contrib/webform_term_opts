@@ -2,26 +2,26 @@
 
 /**
  * @file
- * This is a simple module implementing a webform hook to offer vocabulary terms
+ * This is a simple module implementing a Webform hook to offer vocabulary terms
  * to be used as options in form components.
  */
 
 /**
- * Implementation of hook_webform_select_options_info().
+ * Implements hook_webform_select_options_info().
  */
 function webform_term_opts_webform_select_options_info() {
   $items = array();
 
   $vocabularies = taxonomy_get_vocabularies();
 
-  foreach ($vocabularies as $voc) {
+  foreach ($vocabularies as $vocabulary) {
     /**
      * @todo Add a setting that enables each vocabulary to be shown here.
      */
-    $items['vid_' . $voc->vid] = array(
-      'title' => $voc->name,
+    $items[$vocabulary->machine_name] = array(
+      'title' => t('Vocabulary terms: ') . $vocabulary->name,
       'options callback' => 'webform_term_options_vocabulary_terms',
-      'options arguments' => $voc->vid,
+      'options arguments' => $vocabulary->machine_name,
     );
   }
 
@@ -31,24 +31,14 @@ function webform_term_opts_webform_select_options_info() {
 /**
  * Option list containing all terms of specified vocabulary.
  */
-function webform_term_options_vocabulary_terms($component, $flat, $vid) {
+function webform_term_options_vocabulary_terms($component, $flat, $vocabulary_machine_name) {
   $terms = array();
-
-  $tree = taxonomy_get_tree($vid);
-
+  $tree = taxonomy_get_tree($vocabulary_machine_name);
   $use_i18n = module_exists('i18n_taxonomy');
 
   foreach ($tree as $term) {
-    $prefix = '';
-    if (!$flat) {
-      $prefix = str_repeat('-', $term->depth);
-    }
-    if ($use_i18n) {
-      $terms['tid_' . $term->tid] = $prefix . i18n_taxonomy_term_name($term);
-    }
-    else {
-      $terms['tid_' . $term->tid] = $prefix . $term->name;
-    }
+    $prefix = str_repeat('· ', $term->depth);
+    $terms['tid_' . $term->tid] = ($use_i18n) ? $prefix . i18n_taxonomy_term_name($term) : $prefix . $term->name;
   }
 
   return $terms;

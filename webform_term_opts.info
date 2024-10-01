@@ -1,6 +1,8 @@
+type = module
 name = Webform Term Options
-description = Adds pre-built option lists of Vocabularies to be used in webform components.
+description = Adds pre-built option lists of Vocabularies to be used in Webform components.
 package = Webform
-core = 7.x
+backdrop = 1.x
+
+dependencies[] = taxonomy
 dependencies[] = webform
-;files[] = webform_term_opts.test
